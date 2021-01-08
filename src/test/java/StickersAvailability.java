@@ -3,8 +3,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.ArrayList;
 
 public class StickersAvailability {
     private WebDriver driver;
@@ -20,16 +23,44 @@ public class StickersAvailability {
     @Test
     public void MyFirstTest() {
         driver.get(" http://localhost/litecart/public_html/en/");
-       /* driver.findElement(By.name("username")).click();
-        driver.findElement(By.name("username")).sendKeys("admin");
 
-        driver.findElement(By.name("password")).click();
-        driver.findElement(By.name("password")).sendKeys("admin");
+        //шаг 1. Находим блок всех уток
+        WebElement allDuckBlock = driver.findElement(By.className("listing-wrapper products"));
 
-        driver.findElement(By.name("remember_me")).click();*/
 
-        driver.findElement(By.className("sticker new"));
+        //шаг 2. Составляем список всех уток
+        ArrayList<WebElement> webElements = new ArrayList<WebElement>();
+        webElements = allDuckBlock.findElements(By.className("image-wrapper"));
 
+        //шаг 3. В цикле проверяем стикер каждой отдельной утки
+        ArrayList<WebElement> stickerList = new ArrayList<WebElement>();
+        for (int i = 0; i < webElements.size(); i++) {
+
+
+            stickerList = webElements.get(i).findElement(By.className("sticker"));
+
+            if () {
+                throw new Exception("Стикера нету"); //стикер не найден, то выбрасывается исключение
+            }
+
+            addMethod(5);
+
+        }
+
+
+
+
+
+
+        private void addMethod(int number) {
+
+
+            }
+
+
+    }
+
+    private void addMethod() {
     }
 
     @After
