@@ -21,7 +21,7 @@ public class StickersAvailability {
     }
 
     @Test
-    public void MyFirstTest() {
+    public void StickersTest() {
         driver.get(" http://localhost/litecart/public_html/en/");
 
         //шаг 1. Находим блок всех уток
@@ -42,20 +42,7 @@ public class StickersAvailability {
             if () {
                 throw new Exception("Стикера нету"); //стикер не найден, то выбрасывается исключение
             }
-
-            addMethod(5);
-
         }
-
-
-
-
-
-
-        private void addMethod(int number) {
-
-
-            }
 
 
     }
