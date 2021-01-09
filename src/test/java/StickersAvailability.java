@@ -1,3 +1,5 @@
+//package ru.stqa.training.selenium;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -5,55 +7,66 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class StickersAvailability {
+
     private WebDriver driver;
-    private WebDriverWait wait;
 
     @Before
     public void start() {
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, 30);
     }
 
+
     @Test
-    public void StickersTest() {
-        driver.get(" http://localhost/litecart/public_html/en/");
+    public void StickersTest() throws Exception {
 
-        //шаг 1. Находим блок всех уток
-        WebElement allDuckBlock = driver.findElement(By.className("listing-wrapper products"));
+        driver.get("http://localhost/litecart/en/");
+
+        // Шаг 1. Находим блок всех товаров (уток)
+        WebElement middle = driver.findElement(By.className("middle"));
+
+        WebElement webElement;
+
+        // Шаг 2. Находим блок раздела Most Popular
+        webElement = middle.findElement(By.id("box-most-popular"));
+        stickersAmountCheck(webElement);
+
+        // Шаг 3. Находим блок раздела Campaigns
+        webElement = middle.findElement(By.id("box-campaigns"));
+        stickersAmountCheck(webElement);
+
+        // Шаг 4. Находим блок раздела Latest Products
+        webElement = middle.findElement(By.id("box-latest-products"));
+        stickersAmountCheck(webElement);
+
+    }
 
 
-        //шаг 2. Составляем список всех уток
-        ArrayList<WebElement> webElements = new ArrayList<WebElement>();
-        webElements = allDuckBlock.findElements(By.className("image-wrapper"));
+    private void stickersAmountCheck(WebElement webElement) throws Exception {
 
-        //шаг 3. В цикле проверяем стикер каждой отдельной утки
-        ArrayList<WebElement> stickerList = new ArrayList<WebElement>();
-        for (int i = 0; i < webElements.size(); i++) {
+        // Создаём список товаров (уток) для текущего раздела
+        List<WebElement> allDucks = webElement.findElements(By.className("image-wrapper"));
+        System.out.println("allDucks.size() = " + allDucks.size());
 
-
-            stickerList = webElements.get(i).findElement(By.className("sticker"));
-
-            if () {
-                throw new Exception("Стикера нету"); //стикер не найден, то выбрасывается исключение
+        // В цикле проверяем Количество стикеров для каждой отдельной утки из списка
+        for (WebElement nextElement : allDucks) {
+            List<WebElement> amountStickersPerOneProduct = nextElement.findElements(By.className("sticker"));
+            if (amountStickersPerOneProduct.size() != 1) {
+                throw new Exception("У продукта не ровно один стикер");
             }
         }
 
-
     }
 
-    private void addMethod() {
-    }
 
     @After
     public void stop() {
         driver.quit();
         driver = null;
     }
-}
 
+}
