@@ -10,7 +10,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.List;
 
-public class StickersAvailability {
+public class StickersAvailability8 {
 
     private WebDriver driver;
 

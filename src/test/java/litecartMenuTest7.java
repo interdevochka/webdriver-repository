@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 
-public class litecartMenuTest<id> {
+public class litecartMenuTest7<id> {
     private WebDriver driver;
     private WebDriverWait wait;
 
