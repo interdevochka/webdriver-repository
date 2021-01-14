@@ -1,4 +1,4 @@
-//package ru.stqa.training.selenium;
+
 
 import org.junit.After;
 import org.junit.Before;
@@ -52,13 +52,14 @@ public class Comparison10 {
         WebElement regular_price_color = page1Campaings.findElement(By.className("regular-price"));
         String page1NormalPriceColor = regular_price_color.getCssValue("color");
 
-        // у обычной цены ---------зачеркнутая цена не работает!!!!!!!!
+        // обычной цены зачеркнутая цена
         WebElement regular_price_style = page1Campaings.findElement(By.className("regular-price"));
-        String page1NormalPriceStyle = regular_price_style.getCssValue("s");
+        String page1NormalPriceStyle = regular_price_style.getTagName();
 
-        // г  у аукционной цены цвет  и стиль   ----стиль выдает 700, а в devTools показывает 900
+        // г  у аукционной цены цвет
         WebElement auktion_price_Style = page1Campaings.findElement(By.className("campaign-price"));
-        String page1AuktionPriceStyle = auktion_price_Style.getCssValue("font-weight");
+        //String page1AuktionPriceStyle = auktion_price_Style.getCssValue("font-weight");
+        String page1AuktionPriceStyle = auktion_price_Style.getTagName();
 
         WebElement auktion_price_color = page1Campaings.findElement(By.className("campaign-price"));
         String page1AuktionPriceColor = auktion_price_color.getCssValue("color");
@@ -69,17 +70,6 @@ public class Comparison10 {
 
         WebElement auktion_price_font_size = page1Campaings.findElement(By.className("campaign-price"));
         String page1AuktionPriceSize = auktion_price_font_size.getCssValue("font-size");
-
-
-        System.out.println("page1Name = " + page1Name);
-        System.out.println("page1NormalPrice = " + page1NormalPrice);
-        System.out.println("page1AuktionPrice = " + page1AuktionPrice);
-        System.out.println("page1NormalPriceStyle = " + page1NormalPriceStyle);
-        System.out.println("page1NormalPriceColor = " + page1NormalPriceColor);
-        System.out.println("page1AuktionPriceStyle = " + page1AuktionPriceStyle);
-        System.out.println("page1AuktionPriceColor = " + page1AuktionPriceColor);
-        System.out.println("page1NormalPriceSize = " + page1NormalPriceSize);
-        System.out.println("page1AuktionPriceSize = " + page1AuktionPriceSize);
 
 
         // Часть 2 -- Поиск на странице товара
@@ -107,7 +97,7 @@ public class Comparison10 {
 
         // г  у аукционной цены цвет  и стиль
         WebElement auktion_price_page2_Style = page2Campaings.findElement(By.className("campaign-price"));
-        String page2AuktionPriceStyle = auktion_price_page2_Style.getCssValue("font-weight");
+        String page2AuktionPriceStyle = auktion_price_page2_Style.getTagName();
 
         WebElement auktion_price_page2_color = page2Campaings.findElement(By.className("campaign-price"));
         String page2AuktionPriceColor = auktion_price_page2_color.getCssValue("color");
@@ -120,82 +110,54 @@ public class Comparison10 {
         String page2AuktionPriceSize = auktion_price_page2_font_size.getCssValue("font-size");
 
 
-        System.out.println("page2Name = " + page2Name);
-        System.out.println("page2NormalPrice = " + page2NormalPrice);
-        System.out.println("page2AuktionPrice = " + page2AuktionPrice);
-        System.out.println("page2NormalPriceStyle = " + page2NormalPriceStyle);
-        System.out.println("page2NormalPriceColor = " + page2NormalPriceColor);
-        System.out.println("page2AuktionPriceStyle = " + page2AuktionPriceStyle);
-        System.out.println("page2AuktionPriceColor = " + page2AuktionPriceColor);
-        System.out.println("page2NormalPriceSize = " + page2NormalPriceSize);
-        System.out.println("page2AuktionPriceSize = " + page2AuktionPriceSize);
-
-
         // Часть 3 -- Сравнение
         if (!page1Name.equals(page2Name)) {
-            throw new InterruptedException("Названия продукта не идентичны");
+            throw new InterruptedException("1. Названия продукта не идентичны");
         }
         if (!page1NormalPrice.equals(page2NormalPrice)) {
-            throw new InterruptedException("Обычные цены не идентичны");
+            throw new InterruptedException("2. Обычные цены не идентичны");
         }
         if (!page1AuktionPrice.equals(page2AuktionPrice)) {
-            throw new InterruptedException("Аукционные цены не идентичны");
+            throw new InterruptedException("3. Аукционные цены не идентичны");
         }
 
-        if (!page1NormalPriceStyle.equals(page2NormalPriceStyle)) {
-            throw new InterruptedException("Стили обычных цен не идентичны");
+        if (!page1NormalPriceStyle.equals("s")) {
+            throw new InterruptedException("4. Стили обычных цен не идентичны");
         }
 
-        /*
-        if (!page1NormalPriceColor.equals(page2NormalPriceColor)) {
-            throw new InterruptedException("Цвета обычных цен не идентичны");
+        if (!page1AuktionPriceStyle.equals("strong")) {
+            throw new InterruptedException("5. Стили аукционных цен не идентичны");
         }
 
-        if (!page1AuktionPriceStyle.equals(page2AuktionPriceStyle)) {
-            throw new InterruptedException("Стили аукционных цен не идентичны");
-        }
-
-        if (!page1AuktionPriceColor.equals(page2AuktionPriceColor)) {
-            throw new InterruptedException("Цвета аукционных цен не идентичны");
-        }
-
-        if (!page1NormalPriceSize.equals(page2NormalPriceSize)) {
-            throw new InterruptedException("Размеры обычных цен не идентичны");
-        }
-
-        if (!page1AuktionPriceSize.equals(page2AuktionPriceSize)) {
-            throw new InterruptedException("Размеры аукционных цен не идентичны");
-        }
-
-
-        /*
-        if( ! page1AuktionPrice.equals(page2AuktionPrice)) {
-            throw new InterruptedException("Названия продукта не идентичны");
-        }
-        */
-
-        page1NormalPriceColor = "rgba(119, 119, 119, 1)";
-
+        //  Color
         String cut1 = page1NormalPriceColor.substring(5, 8);
         String cut2 = page1NormalPriceColor.substring(10, 13);
         String cut3 = page1NormalPriceColor.substring(15, 18);
-        System.out.println(cut1);
-        System.out.println(cut2);
-        System.out.println(cut3);
-/*
-        if(! (r==g==b)) {
-            throw new InterruptedException("Названия продукта не идентичны");
+        if (!cut1.equals(cut2) && cut1.equals(cut3)) {
+            throw new InterruptedException("6. Цвет не серый");
         }
-*/
 
+        String cut4 = page2NormalPriceColor.substring(5, 8);
+        String cut5 = page2NormalPriceColor.substring(10, 13);
+        String cut6 = page2NormalPriceColor.substring(15, 18);
+        if (!cut4.equals(cut5) && cut4.equals(cut6)) {
+            throw new InterruptedException("7. Цвет не красный");
+        }
 
+        Integer price1Size = Integer.valueOf(page1NormalPriceSize.substring(0, 2));
+        Integer price2Size = Integer.valueOf(page2NormalPriceSize.substring(0, 2));
 
+        if (!(price2Size > price1Size)) {
+            throw new InterruptedException("8. Размеры обычных цен не идентичны");
+        }
 
-       /*
-        WebElement form = driver.findElement(By.name("countries_form"));
-        List<WebElement> trClassRowList = form.findElements(By.className("row"));
+        Integer price3Size = Integer.valueOf(page1AuktionPriceSize.substring(0, 2));
+        Integer price4Size = Integer.valueOf(page2AuktionPriceSize.substring(0, 2));
 
-        */
+        if (!(price4Size > price3Size)) {
+            throw new InterruptedException("9. Размеры аукционных цен не идентичны");
+        }
+
 
     }
 
@@ -207,3 +169,4 @@ public class Comparison10 {
     }
 
 }
+

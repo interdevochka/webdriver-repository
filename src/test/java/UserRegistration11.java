@@ -30,7 +30,7 @@ public class UserRegistration11 {
         }
 
         @Test
-        public void comparePages() throws InterruptedException {
+        public void registration() throws InterruptedException {
 
             String password = "root";
             String email = randomEmail();
@@ -52,9 +52,18 @@ public class UserRegistration11 {
             WebElement last_name = create_account_block.findElement(By.name("lastname"));
             last_name.sendKeys("Pupkin"); //кликаем и заполняем поле last name
 
+            WebElement address_1 = create_account_block.findElement(By.name("address1"));
+            address_1.sendKeys("Avenue str. 10-2"); //кликаем и заполняем поле address1
+
+            WebElement postcode = create_account_block.findElement(By.name("postcode"));
+            postcode.sendKeys("12345"); //кликаем и заполняем поле address1
+
+            WebElement city = create_account_block.findElement(By.name("city"));
+            city.sendKeys("Mobile"); //кликаем и заполняем поле city
+
             WebElement country = create_account_block.findElement(By.id("select2-country_code-nw-container"));
             country.click();
-            country.sendKeys("United States"+ Keys.ENTER); //кликаем и заполняем поле last name
+            country.sendKeys("United States"+ Keys.ENTER); //кликаем на выпадающий список  и прописываем в поле country Unated States
 
             WebElement zone = driver.findElement(By.name("zone_code"));
             Select select = new Select(zone);
@@ -62,18 +71,17 @@ public class UserRegistration11 {
 
             WebElement phone = create_account_block.findElement(By.id("phone"));
             phone.clear();
-            phone.sendKeys("323332233"); //кликаем и заполняем поле last name
+            phone.sendKeys("323332233"); //кликаем и заполняем поле phone
 
 
-            // name = address1
-            //name= postcode
-            //name = city
+            WebElement create_account_button = create_account_block.findElement(By.name("create_account"));
+            create_account_button.click(); //кликаем по кнопке create account
 
-            //name= email
 
-            //registartionButton.click/();
 
-            
+
+
+
 
 
         }
