@@ -57,7 +57,7 @@ public class UserRegistration11 {
             address_1.sendKeys("Avenue str. 10-2"); //кликаем и заполняем поле address1
 
             WebElement postcode = create_account_block.findElement(By.name("postcode"));
-            postcode.sendKeys("12345"); //кликаем и заполняем поле address1
+            postcode.sendKeys("12345"); //кликаем и заполняем поле postcode
 
             WebElement city = create_account_block.findElement(By.name("city"));
             city.sendKeys("Mobile"); //кликаем и заполняем поле city
