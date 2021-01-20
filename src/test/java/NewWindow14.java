@@ -63,8 +63,8 @@ public class NewWindow14 {
         WebElement content = driver.findElement(By.id("content"));
         List<WebElement> trList = content.findElements(cssSelector("tr"));// список ссылок на странице редактирования страны
 
-        String originalWindow = driver.getWindowHandle();  //??????  запоминаем идентификатор текущего окна, он должен быть object или String????
-// запоминаем идентификаторы уже открытых окон
+        String originalWindow = driver.getWindowHandle();  //  запоминаем идентификатор текущего окна, он должен быть object или String????
+      // запоминаем идентификаторы уже открытых окон
         Set<String> existingWindows = driver.getWindowHandles();//сет существующих окон
 
         for (int i = 1; i < 3; i++) {

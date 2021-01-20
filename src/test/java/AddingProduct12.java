@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
 import java.util.List;
 
 import static org.openqa.selenium.By.cssSelector;
@@ -62,9 +63,6 @@ public class AddingProduct12 {
         WebElement general_menu_catalog = driver.findElement(By.id("content")); // центральный блок на странице Каталога
 
 
-        //нажатие радиобаттона КАК??????
-
-
         WebElement name = general_menu_catalog.findElement(By.name("name[en]")); //заполняем поле Name
         name.sendKeys("Vasya");
 
@@ -82,11 +80,12 @@ public class AddingProduct12 {
         quantity.sendKeys("5");
         Thread.sleep(2000);
 
-        //нажатие Upload Images КАК???
+        //нажатие Upload Images
+        // Вставка картинки
         WebElement uploadImages = driver.findElement(By.cssSelector("input[name='new_images[]']"));
-        uploadImages.sendKeys("C:\\Users\\HP\\Desktop");
-        //uploadImages.sendKeys("duck.jpg"); // TODO
-        Thread.sleep(2000);
+        uploadImages.clear();
+        File file = new File("duck.jpg");
+        uploadImages.sendKeys(file.getAbsolutePath());
 
 
         //заполнить календарик Date Valid From
@@ -164,6 +163,13 @@ public class AddingProduct12 {
         tax2.clear();
         tax2.sendKeys("6");
         Thread.sleep(2000);
+
+
+        WebElement create_account_button = general_menu_catalog.findElement(By.name("save")); //кликаем по кнопке Save
+        general_menu_catalog.click(); //кликаем по кнопке create account
+        Thread.sleep(2000);
+
+
     }
 
     @After
