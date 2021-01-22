@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElement;
 
 public class Basket13_v4 {
 
@@ -83,7 +84,16 @@ public class Basket13_v4 {
             // 3) подождать, пока счётчик товаров в корзине обновится
             Thread.sleep(1000);
 
-
+// Ожидание что количество товара в корзине увеличилось на 1
+            if (i == 0) {
+                wait.until(textToBePresentInElement(driver.findElement(By.cssSelector("span[class='quantity']")), "1"));
+            }
+            if (i == 1) {
+                wait.until(textToBePresentInElement(driver.findElement(By.cssSelector("span[class='quantity']")), "2"));
+            }
+            if (i == 2) {
+                wait.until(textToBePresentInElement(driver.findElement(By.cssSelector("span[class='quantity']")), "3"));
+            }
         } //конец цикла
 
 
