@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.support.ui.ExpectedConditions.stalenessOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentInElement;
 
 public class Basket13_v4 {
@@ -26,7 +27,7 @@ public class Basket13_v4 {
     public void start() {
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, 3);
+        wait = new WebDriverWait(driver, 5);
     }
 
     @Test
@@ -35,12 +36,11 @@ public class Basket13_v4 {
         for (int i = 0; i < 3; i++) {
 
             // 1) открыть главную страницу
-            //тут похоже нужен цикл...
             driver.get("http://localhost/litecart/public_html/en/");
+            Thread.sleep(1000);
 
             // 2) открыть первый товар из списка
             WebElement mostPopularBlock = driver.findElement(By.id("box-most-popular")); // выбираем блок most popular
-
 
             List<WebElement> liList = mostPopularBlock.findElements(cssSelector("li")); // берем список элементов класса li
             WebElement li = liList.get(0);
@@ -50,27 +50,19 @@ public class Basket13_v4 {
             a.click(); //кликаем на первую утку в списке
             Thread.sleep(1000);
 
-            // WebElement first_duck = li.findElement(By.xpath("//a[contains(@href,'red-duck-p-3')]"));  //ищем и нажимаем на первую утку
-            //first_duck.click();
-            //Thread.sleep(2000);
-
             // 2) добавить его в корзину (при этом может случайно добавиться товар, который там уже есть, ничего страшного)
             WebElement add_cart_button;
 
-            //WebElement sku = driver.findElement(By.name("options[Size]"));
             List<WebElement> skuList = driver.findElements(By.name("options[Size]")); //кнопка для желтой утки выбираем размер
             boolean isYellowExist = true;
             isYellowExist = skuList.size()>0;
-
-
-           // isYellowExist = sku.isDisplayed();
 
             if (isYellowExist) {
                 WebElement size = driver.findElement(cssSelector("select[name='options[Size]']"));
                 size.click();
                 Select select = new Select(size);
-                Thread.sleep(1000);
-                select.selectByVisibleText("Medium +$2.50");
+                Thread.sleep(2000);
+                select.selectByVisibleText("Small");
                 Thread.sleep(1000);
             }
 
@@ -84,64 +76,66 @@ public class Basket13_v4 {
             // 3) подождать, пока счётчик товаров в корзине обновится
             Thread.sleep(1000);
 
-// Ожидание что количество товара в корзине увеличилось на 1
-            if (i == 0) {
-                wait.until(textToBePresentInElement(driver.findElement(By.cssSelector("span[class='quantity']")), "1"));
+            // подождать, пока новый товар не добавится в корзину
+            switch(i) {
+                case 0:
+                    wait.until(textToBePresentInElement(driver.findElement(By.cssSelector("span[class='quantity']")), "1"));
+                    break;
+                case 1:
+                    wait.until(textToBePresentInElement(driver.findElement(By.cssSelector("span[class='quantity']")), "2"));
+                    break;
+                case 2:
+                    wait.until(textToBePresentInElement(driver.findElement(By.cssSelector("span[class='quantity']")), "3"));
+                    break;
+                default:
+                    System.out.println("Количество товаров корзине увеличено");
             }
-            if (i == 1) {
-                wait.until(textToBePresentInElement(driver.findElement(By.cssSelector("span[class='quantity']")), "2"));
-            }
-            if (i == 2) {
-                wait.until(textToBePresentInElement(driver.findElement(By.cssSelector("span[class='quantity']")), "3"));
-            }
+
         } //конец цикла
 
 
       // 5) открыть корзину (в правом верхнем углу кликнуть по ссылке Checkout)
         WebElement cart_button = driver.findElement(By.id("cart"));
         cart_button.click(); //кликаем по кнопке cart
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
-        WebElement shortcuts_pannel = driver.findElement(By.className("shortcuts"));//панель маленьких уток
+        WebElement shortcuts_pannel = driver.findElement(By.cssSelector("ul[class='shortcuts']"));//панель маленьких уток
         List<WebElement> liDuckList = shortcuts_pannel.findElements(cssSelector("li")); // берем список элементов класса li
-        WebElement liDuck1 = liDuckList.get(0); //выбираем первую утку-левую
+        WebElement liDuck1;
 
-        //проверяем, есть ли блок с маленькими утками
-        boolean duckExist = liDuckList.size() >0;
+        // Удалять товары
         //если блок с маленькими утками есть, то находим его размер
         int size = liDuckList.size();
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size-1; i++) {
+            shortcuts_pannel = driver.findElement(By.cssSelector("ul[class='shortcuts']"));//панель маленьких уток
+            liDuckList = shortcuts_pannel.findElements(cssSelector("li")); // берем список элементов класса li
+            liDuck1 = liDuckList.get(0); //выбираем первую утку-левую
 
-
-        shortcuts_pannel = driver.findElement(By.className("shortcuts"));//панель маленьких уток
-        liDuckList = shortcuts_pannel.findElements(cssSelector("li")); // берем список элементов класса li
-        liDuck1 = liDuckList.get(0); //выбираем первую утку-левую
-
-
-        //находим левую маленькую утку и кликаем
-        WebElement little_duck = liDuck1.findElement(By.tagName("a"));
-        little_duck.click(); //кликаем на первую утку в списке
-        Thread.sleep(1000);
-
-        boolean isLeftLittleDuck = true;
-        isLeftLittleDuck = little_duck.isDisplayed();
-
-        // 6) удалить все товары из корзины один за другим,
-        if (isLeftLittleDuck) {
-            little_duck.click();
+            //находим левую маленькую утку и кликаем
+            WebElement little_duck = liDuck1.findElement(By.tagName("a"));
+            little_duck.click(); //кликаем на первую утку в списке
             Thread.sleep(1000);
 
+            // находим таблицу внизу
+            WebElement checkout = driver.findElement(By.id("checkout-summary-wrapper"));
+            WebElement box = checkout.findElement(By.id("box-checkout-summary"));
+            WebElement order = box.findElement(By.id("order_confirmation-wrapper"));
+            WebElement table = box.findElement(By.tagName("table"));
+
+            WebElement remove_cart_item = driver.findElement(By.name("remove_cart_item"));
+            remove_cart_item.click();
+            Thread.sleep(2000);
+
+            // после каждого удаления подождать, пока внизу обновится таблица
+            wait.until(stalenessOf(table));
         }
 
         WebElement remove_cart_item = driver.findElement(By.name("remove_cart_item"));
         remove_cart_item.click();
 
-        // после каждого удаления подождать, пока внизу обновится таблица
-            Thread.sleep(1000);
     }
 
-    }
 
     @After
     public void stop() {
