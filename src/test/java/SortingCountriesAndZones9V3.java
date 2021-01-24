@@ -1,13 +1,22 @@
-//package ru.stqa.training.selenium;
+//package ru.stqa.training.selenium;//package ru.stqa.training.selenium;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class SortingCountriesAndZones9Copy {
+import static org.openqa.selenium.By.cssSelector;
+
+
+public class SortingCountriesAndZones9V3 {
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -17,7 +26,7 @@ public class SortingCountriesAndZones9Copy {
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, 3);
     }
-/*
+
     @Test
     public void MyFirstTest() throws InterruptedException {
 
@@ -106,50 +115,93 @@ public class SortingCountriesAndZones9Copy {
 
         ///////////////////////////////////////////////////
         //2)//зайти в каждую из стран и проверить, что зоны расположены в алфавитном порядке
-        driver.get("http://localhost/litecart/public_html/admin/?app=geo_zones&doc=geo_zones"); //зайти на страницу Гео Зон
+        String countryName = "";
+        driver.get("http://localhost/litecart/public_html/admin/?app=geo_zones&doc=geo_zones");
+        WebElement task2Form = driver.findElement(By.name("geo_zones_form"));
+        List<WebElement> task2RowList = task2Form.findElements(By.className("row"));
 
-        WebElement geoZonesBlock = driver.findElement(By.cssSelector("form[name='geo_zones_form'] table tr:nth-child(2)"));//блок Гео Зонс
-        List<WebElement> geoTrList = geoZonesBlock.findElements(By.tagName("tr")); //лист tr
+        String task2CountryName = "";
+        List<WebElement> task2tdList;
+        List<String> task2listCountries = new ArrayList<>();
+        WebElement task2a;
+        WebElement task2td3;
+        String task2zoneCount;
+        String task2link;
 
-        for (int i = 1; i < geoTrList.size() - 1; i++) {
-
-            List<WebElement> tdListGeoZones = geoTrList.get(i).findElements(By.tagName("td"));
-            WebElement td3 = tdListGeoZones.get(2);
-            WebElement a = td3.findElement(By.tagName("a"));
-            String geoZoneName = a.getText();
-            geoZonesList1.add(geoZoneName);
-
-            String geoZoneLink = a.getAttribute("href");
-
-            driver.get(geoZoneLink);
-
-            for (int j = 1; j < editGeoZonesList2.size(); j++) {
-
-            WebElement editGeoZonesBlock = driver.findElement(By.cssSelector("form[name='geo_zones_form'] table tr:nth-child(2)"));//блок Зонс в Edit Geo Zones
-            editGeoZonesList2.add(editGeoZonesBlock.getCssValue(By.name("zones[1][zone_code]")).getText());
-
+        for (int i = 0; i < task2RowList.size(); i++) {
+            task2a = task2RowList.get(i).findElement(cssSelector("a"));
+            task2CountryName = task2a.getText();
+            if (!countryName.equals("")) {
+                task2listCountries.add(task2CountryName);
             }
-            boolean isSorted3 = editGeoZonesList2.stream().sorted().collect(Collectors.toList()).equals(editGeoZonesList2);
-            if (isSorted3) {
-                System.out.println("Зоны отсортированы");
-            } else {
-                System.out.println("Зоны не отсортированы");
+            task2tdList = task2RowList.get(i).findElements(cssSelector("td"));
+            task2td3 = task2tdList.get(2);
+            task2zoneCount = task2td3.getText();
+            if (!task2zoneCount.equals("0")) {
+                task2link = task2a.getAttribute("href");
+                zoneCheckTask2(task2link);
+
+                driver.get("http://localhost/litecart/public_html/admin/?app=geo_zones&doc=geo_zones");
+                task2Form = driver.findElement(By.name("geo_zones_form"));
+                task2RowList = task2Form.findElements(By.className("row"));
             }
-
-            editGeoZonesList2 = new ArrayList<>();
-            driver.get("http://localhost/litecart/public_html/admin/?app=geo_zones&doc=geo_zones"); //зайти на страницу Гео Зон
-            WebElement geoZonesBlock1 = driver.findElement(By.cssSelector("form[name='geo_zones_form'] table tr:nth-child(2)"));//блок Гео Зонс
-            List<WebElement> geoTrList1 = geoZonesBlock1.findElements(By.tagName("tr")); //лист tr
-
         }
+
     }
-        //второй tr и третий td  name = zones[1][zone_code]
 
-        //
+    private boolean zoneCheck(String link) throws InterruptedException {
+        driver.get(link);
+        WebElement form = driver.findElement(By.id("table-zones"));
+        List<WebElement> aLists = form.findElements(cssSelector("a"));
+        // System.out.println("aLists.size() = " + aLists.size());
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < aLists.size(); i++) {
+            if (aLists.get(i).getText() != "") {
+                list.add(aLists.get(i).getText());
+                System.out.println(aLists.get(i).getText());
+            }
+        }
+        boolean isSorted = list.stream().sorted().collect(Collectors.toList()).equals(list);
+        if (!isSorted) {
+            throw new InterruptedException("Список зон не отсортирован");
+        }
+        System.out.println("Список зон отсортирован");
+        return isSorted;
+    }
 
-    // End method MyFirstTest
 
-*/
+    private boolean zoneCheckTask2(String link) throws InterruptedException {
+        System.out.println("link = " + link);
+        boolean isSorted = true;
+        driver.get(link);
+        WebElement form = driver.findElement(By.id("table-zones"));
+        List<WebElement> trList = form.findElements(cssSelector("tr"));
+        List<String> selectedList = new ArrayList<>();
+
+        boolean bo = isElementPresent(driver, By.cssSelector("select[disabled='disabled']"));
+        if (bo) {
+            return true;
+        } else {
+            for (int i = 1; i < trList.size() - 1; i++) {
+                List<WebElement> tdList = trList.get(i).findElements(cssSelector("td"));
+                WebElement select = tdList.get(2).findElement(By.cssSelector("select"));
+                WebElement selected = select.findElement(By.cssSelector("option[selected='selected']"));
+                selectedList.add(selected.getText());
+            }
+        }
+        isSorted = selectedList.stream().sorted().collect(Collectors.toList()).equals(selectedList);
+        if (!isSorted) {
+            throw new InterruptedException("Список зон в задании 2 не отсортирован");
+        }
+        System.out.println("Список зон в задании 2 отсортирован");
+        return isSorted;
+    }
+
+    boolean isElementPresent(WebDriver driver, By locator) {
+        return driver.findElements(locator).size() > 0;
+    }
+
+
 
     @After
     public void stop() {
