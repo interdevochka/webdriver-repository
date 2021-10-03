@@ -1,12 +1,12 @@
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AddToBusket extends Settings {
+public class TestAddToBusket extends Settings {
     //добавление товаров в корзину, сравнение товара в корзине с карточкой товара
     String baseUrlMain = "https://www.amazon.com";
 
     @Test //добавление в корзину одного товара, сравнение в корзине с карточкой товара, та ли сумма и кол-во
-    public void addToCartOneDress() throws InterruptedException {
+    public void testAddToCartOneDress() throws InterruptedException {
         addToBusketPage.open(baseUrlMain);
         addToBusketPage.findDress();
         addToBusketPage.findConcreticDress();
